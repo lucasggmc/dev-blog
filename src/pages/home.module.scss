@@ -1,1 +1,85 @@
-// TODO
+.container{
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 2rem;
+
+    display: flex;    
+    flex-direction: column;
+    gap: 4rem;
+
+    .homeHeader{
+        color: var(--pink);
+        display: flex;
+        margin-top: 4.938rem;      
+        align-items: flex-end;  
+
+        img{
+            width: 40px;
+            height: 23px;
+            margin-right: 1rem;
+        }
+
+        p{
+            color: var(--white);
+            font-weight: 700;
+            font-size: 1.125rem;
+
+            &::after{
+                content: ".";
+                color: var(--pink);
+                margin-left: 5px;
+            }
+        }
+    }
+}
+
+.postContainer{
+    width: 700px;
+    cursor: pointer;
+
+    transition: filter 0.2s;
+
+    h1{
+        font-weight: 700;
+        font-size: 1.75rem;
+        margin-bottom: 0.5rem;
+    }
+
+    p{
+        margin-bottom: 1.5rem;
+        font-weight: 400;
+        font-size: 1.125rem;
+        color: var(--gray-100);
+    }
+
+    footer{
+        div{
+            display: flex;
+            gap: 1.5rem;
+            span{
+                color: var(--gray-200);
+                display: flex;
+                align-items: center;
+                gap: 0.688rem;
+            }
+        }
+    }
+
+    &:hover{
+        filter: brightness(0.8);
+    }
+}
+
+.loadPosts{
+    cursor: pointer;
+    color: var(--pink);
+    font-weight: 600;
+
+    transition: filter 0.2s;
+
+    &:hover{
+        text-decoration: underline;    
+        filter: brightness(0.8);
+    }
+
+}
