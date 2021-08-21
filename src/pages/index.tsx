@@ -3,6 +3,8 @@ import Head from 'next/head';
 
 import { getPrismicClient } from '../services/prismic';
 import Prismic from '@prismicio/client';
+import { format } from 'date-fns';
+import ptBR from 'date-fns/locale/pt-BR';
 
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
@@ -30,14 +32,37 @@ interface HomeProps {
 
 export default function Home({postsPagination}: HomeProps) {  
   const [posts, setPosts] = useState(postsPagination.results);  
+  const [nextPage, setNextPage] = useState(postsPagination.next_page);
 
   function handleLoadPosts(){  
+    console.log('nextPage', nextPage);
 
-    fetch(postsPagination.next_page)
-    .then(response => response.json())
-    .then(data => {      
-      setPosts([...posts, ...data.results])
-    })
+    if(nextPage){
+      fetch(nextPage)
+      .then(response => response.json())
+      .then(data => {              
+        let postsResponse = data.results.map(post => {
+          return {
+            uid: post.uid,      
+            first_publication_date: format(
+              new Date(post.first_publication_date),
+              "dd LLL yyyy",
+              {
+                locale: ptBR,
+              }
+            ),
+            data: {
+              title: post.data.title,
+              subtitle: post.data.subtitle,
+              author: post.data.author,
+            }
+          }
+        })
+
+        setPosts([...posts, ...postsResponse])
+        setNextPage(data.next_page);
+      })
+    }
 
   }
 
@@ -48,7 +73,7 @@ export default function Home({postsPagination}: HomeProps) {
       </Head>
       <main className={styles.container}>               
           <header className={styles.homeHeader}>
-          <img src="/icons/greater-less-sign.svg" alt="" />
+          <img src="/icons/greater-less-sign.svg" alt="logo" />
           <p>spacetraveling</p>          
           </header>
             { posts.map(post => (
@@ -87,7 +112,7 @@ export default function Home({postsPagination}: HomeProps) {
               </footer>
             </div>   
 
-           <span className={styles.loadPosts} onClick={handleLoadPosts}>Carregar mais posts</span>
+           { nextPage && <span className={styles.loadPosts} onClick={handleLoadPosts}>Carregar mais posts</span> }
 
       </main>
     </>
@@ -108,13 +133,17 @@ export const getStaticProps:GetStaticProps = async () => {
     console.log('rr', JSON.stringify(postsResponse, null, 2));
 
   let posts = postsResponse.results.map(post => {
+    var date = format(
+      new Date(post.first_publication_date),
+      "dd LLL yyyy",
+      {
+        locale: ptBR,
+      }
+    )
+    
     return {            
         uid: post.uid,      
-        first_publication_date: new Date(post.last_publication_date).toLocaleDateString('pt-BR', {
-          day: '2-digit',
-          month: 'short',
-          year: 'numeric'
-        }),
+        first_publication_date: date,
         data: {
           title: post.data.title,
           subtitle: post.data.subtitle,
