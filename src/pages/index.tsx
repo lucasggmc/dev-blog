@@ -11,6 +11,7 @@ import styles from './home.module.scss';
 import { FiCalendar, FiUser } from 'react-icons/fi';
 import { useState } from 'react';
 import Header from '../components/Header';
+import Link from 'next/link';
 
 interface Post {
   uid?: string;
@@ -75,41 +76,33 @@ export default function Home({postsPagination}: HomeProps) {
       <Header />
       <main className={styles.container}>                         
             { posts.map(post => (
-              <div className={styles.postContainer} key={post.uid}>
-              <h1>{post.data.title}</h1>
-              <p>{post.data.subtitle}</p>
-              <footer>
-                <div>
-                  <span>
-                    <FiCalendar />
-                  {post.first_publication_date}
-                  </span>
-                  <span>
-                    <FiUser />
-                    {post.data.author}
-                  </span>
-                </div>
-              </footer>
-            </div>    
-            ))}              
-
-            <div className={styles.postContainer}>
-              <h1>Como utilizar Hooks</h1>
-              <p>Pensando em sincronização em vez de ciclos de vida.</p>
-              <footer>
-                <div>
-                  <span>
-                    <FiCalendar />
-                  15 Mar 2021
-                  </span>
-                  <span>
-                    <FiUser />
-                    Joseph Oliveira
-                  </span>
-                </div>
-              </footer>
-            </div>   
-
+              <Link key={post.uid} href={`/post/${post.uid}`}>
+                <a className={styles.postContainer}>
+                  <h1>{post.data.title}</h1>
+                  <p>{post.data.subtitle}</p>
+                  <footer>
+                    <div>
+                      <span>
+                        <FiCalendar />
+                      {
+                        format(
+                          new Date(post.first_publication_date),
+                          "dd LLL yyyy",
+                          {
+                            locale: ptBR,
+                          }
+                        )                      
+                      }
+                      </span>
+                      <span>
+                        <FiUser />
+                        {post.data.author}
+                      </span>
+                    </div>
+                  </footer>
+                </a>
+            </Link>    
+            ))}                          
            { nextPage && <span className={styles.loadPosts} onClick={handleLoadPosts}>Carregar mais posts</span> }
 
       </main>
@@ -123,25 +116,25 @@ export const getStaticProps:GetStaticProps = async () => {
   const postsResponse = await prismic.query([
     Prismic.predicates.at('document.type', 'posts')
   ], {
-          fetch: ['posts.title', 'posts.subtitle', 'posts.author', 'posts.content'],
-          pageSize: 1,
+      fetch: ['posts.title', 'posts.subtitle', 'posts.author', 'posts.content'],
+      pageSize: 1,
     })
 
     //console.log('rr', postsResponse)
     console.log('rr', JSON.stringify(postsResponse, null, 2));
 
   let posts = postsResponse.results.map(post => {
-    var date = format(
-      new Date(post.first_publication_date),
-      "dd LLL yyyy",
-      {
-        locale: ptBR,
-      }
-    )
+    // var date = format(
+    //   new Date(post.first_publication_date),
+    //   "dd LLL yyyy",
+    //   {
+    //     locale: ptBR,
+    //   }
+    // )
     
     return {            
         uid: post.uid,      
-        first_publication_date: date,
+        first_publication_date: post.first_publication_date, //date,
         data: {
           title: post.data.title,
           subtitle: post.data.subtitle,

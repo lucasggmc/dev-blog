@@ -60,9 +60,9 @@ export default function Post() {
             </div>
           </header>  
 
-          <div className={styles.postText}>
+          <article className={styles.post}>
             textoooooooooooooooooo
-          </div>        
+          </article>        
 
       </main>
     </>

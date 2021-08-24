@@ -14,11 +14,13 @@
     cursor: pointer;
 
     transition: filter 0.2s;
+    text-decoration: none;
 
     h1{
         font-weight: 700;
         font-size: 1.75rem;
         margin-bottom: 0.5rem;
+        color: var(--white);
     }
 
     p{
