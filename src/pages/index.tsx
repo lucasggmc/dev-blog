@@ -8,8 +8,9 @@ import ptBR from 'date-fns/locale/pt-BR';
 
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
-import { FiCalendar, FiUser, FiClock } from 'react-icons/fi';
+import { FiCalendar, FiUser } from 'react-icons/fi';
 import { useState } from 'react';
+import Header from '../components/Header';
 
 interface Post {
   uid?: string;
@@ -71,11 +72,8 @@ export default function Home({postsPagination}: HomeProps) {
       <Head>
         <title>Home | dev-blog</title>
       </Head>
-      <main className={styles.container}>               
-          <header className={styles.homeHeader}>
-          <img src="/icons/greater-less-sign.svg" alt="logo" />
-          <p>spacetraveling</p>          
-          </header>
+      <Header />
+      <main className={styles.container}>                         
             { posts.map(post => (
               <div className={styles.postContainer} key={post.uid}>
               <h1>{post.data.title}</h1>

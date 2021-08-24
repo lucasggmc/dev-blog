@@ -1,1 +1,15 @@
-// TODO
+.homeHeader{
+    color: var(--pink);
+    display: flex;          
+    align-items: flex-end;  
+
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 2rem;        
+
+    img{
+        margin-top: 4.938rem;        
+        cursor: pointer;
+    }
+    
+}

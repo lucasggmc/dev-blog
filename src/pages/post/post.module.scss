@@ -1,1 +1,50 @@
-// TODO
+.headerContainer{    
+    max-width: 721px;
+    margin: 0 auto;
+}
+
+.principalImage{   
+    margin-top: 2.438rem;
+    margin-bottom: 5rem;
+    width: 100%;     
+}
+
+.container{
+    max-width: 721px;
+    margin: 0 auto;
+    padding: 0 2rem;
+
+    display: flex;    
+    flex-direction: column;  
+    align-items: center;      
+
+    header{
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        
+        h1{
+            font-weight: 700;
+            font-size: 3rem;
+        }
+        .postInfo{            
+            display: flex;
+            gap: 1.5rem;
+
+            span{
+                color: var(--gray-200);
+                display: flex;
+                align-items: center;
+                gap: 0.688rem;
+            }            
+        }
+
+    }
+
+    .postText{
+        margin-bottom: 5rem;
+        margin-top: 4rem;
+
+        width: 100%;
+    }
+}
