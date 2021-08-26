@@ -38,27 +38,19 @@ interface PostProps {
 
 export default function Post({post}: PostProps) {  
   const router = useRouter()
-  const readingTime  = post.data.content.reduce((total, element) => {     
-    let body = RichText.asText(element.body);  
+  const wordsLenght = post.data.content.reduce((total, element) => {     
+    let body = RichText.asText(element.body);      
     let heading = element.heading;
     let bodyHeading = body.concat(heading);
     let textArray = bodyHeading.split(/\s+/).length;   
 
-    total += textArray;    
+    total += textArray; 
+    //console.log('total', total / 200);
+    //return Math.ceil(total / 200);
+    return total;
+    }, 0);   
 
-    return Math.ceil(total / 200);
-    }, 0);
-    console.log('readingTime', readingTime);
-
-  const postContent = post.data.content;
-  const postBody = postContent.map(item => RichText.asText(item.body));
-  const postHeading = postContent.map(item => item.heading);
-  const postHeadingAndBodyWords = postBody.concat(postHeading);
-  const postWords = postHeadingAndBodyWords.map(item => item.split(/\s+/));
-  const totalPostBodyLength = postWords.map(item => item.length);
-  const totalPostWords = totalPostBodyLength.reduce((acc, val) => acc + val);
-  const timeToRead = Math.ceil(totalPostWords / 200);
-  console.log('timeToRead', timeToRead);
+    const readingTime = Math.ceil(wordsLenght / 200);
 
   if (router.isFallback) {
     return <div>Carregando...</div>
@@ -129,8 +121,7 @@ export const getStaticPaths = async () => {
       fetch: ['posts.title', 'posts.subtitle', 'posts.author', 'posts.content'],
       pageSize: 2,
     })
-
-  console.log('posts', posts);
+  
   let paths = posts.results.map(post => {
     return {
       params: { slug: post.uid }
@@ -150,8 +141,7 @@ export const getStaticProps:GetStaticProps = async({params}) => {
   const response = await prismic.getByUID("posts", String(slug), {});
   // console.log('ress', JSON.stringify(response, null, 2));
   // console.log('reeee', response);
-
-  // TODO
+  
   const post = {
     first_publication_date: response.first_publication_date,
     uid: response.uid,
